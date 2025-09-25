@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeSpace - Dashboard</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Font Awesome for icons (used for nav & quick actions) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Kaushan Script for VibeSpace logo -->
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <!-- Top bar -->
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <h1 class="logo">VibeSpace</h1>
+      </div>
+      <div class="topbar-right">
+        <h2>Dashboard</h2>
+      </div>
+    </div>
+  </header>
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Main Sidebar">
+    <!-- logo is duplicated in topbar for compact look; keep small label for screen readers -->
+    <span class="sr-only">VibeSpace</span>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="active"><i class="fa-solid fa-house"></i> <span>Home</span></a></li>
+        <li><a href="study.html"><i class="fa-regular fa-clock"></i> <span>Study Room</span></a></li>
+        <li><a href="chill.html"><i class="fa-regular fa-face-smile"></i> <span>Chill Room</span></a></li>
+        <li><a href="community.html"><i class="fa-solid fa-users"></i> <span>Community</span></a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- page header intentionally removed (topbar provides context). space below the topbar is handled by CSS -->
+
+    <section class="dashboard">
+      <div class="welcome-card">
+        <img src="https://via.placeholder.com/80" alt="User avatar" class="avatar">
+        <div class="welcome-text">
+          <h3 id="displayName">Hi Alex,</h3>
+          <p>Ready to focus?</p>
+        </div>
+      </div>
+
+      <div class="quick-access">
+        <h3>Quick Access</h3>
+        <div class="quick-grid">
+          <button class="btn btn-pill" data-action="quick-text"><i class="fa-regular fa-comment"></i> <span>Text</span></button>
+          <button class="btn btn-pill" data-action="quick-audio"><i class="fa-solid fa-microphone"></i> <span>Audio</span></button>
+          <button class="btn btn-pill" data-action="quick-video"><i class="fa-solid fa-video"></i> <span>Video</span></button>
+        </div>
+      </div>
+
+      <div class="study-room-card">
+        <h3><i class="fa-solid fa-clock"></i>Study Room</h3>
+        <p>Focus with our Pomodoro timer and study tools</p>
+        <button class="btn"><i class="fa-solid fa-play"></i>&nbsp;Start Focus</button>
+      </div>
+
+      <div class="chill-room-card">
+        <h3><i class="fa-solid fa-face-smile"></i>Chill Room</h3>
+        <p>Take a break with memes and fun activities</p>
+        <button class="btn"><i class="fa-solid fa-hand-peace"></i>&nbsp;Join Fun</button>
+      </div>
+
+      <div class="recent-activity">
+        <h3><i class="fa-solid fa-list"></i>Recent Activity</h3>
+        <p>No recent activity yet. Start by joining a room!</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <button id="toggleCaptions">Captions</button>
+    <button id="toggleContrast">High Contrast</button>
+    <button id="toggleTheme">Pastel Theme</button>
+    <button id="voiceToText">Voice-to-Text</button>
+    <p>© 2026 VibeSpace</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

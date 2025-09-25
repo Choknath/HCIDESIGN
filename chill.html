@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeSpace - Chill Room</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <div class="topbar-left"><h1 class="logo">VibeSpace</h1></div>
+      <div class="topbar-right"><h2>Chill Room</h2></div>
+    </div>
+  </header>
+
+  <aside class="sidebar" role="navigation" aria-label="Main Sidebar">
+    <span class="sr-only">VibeSpace</span>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Home</span></a></li>
+        <li><a href="Study.html"><i class="fa-regular fa-clock"></i> <span>Study Room</span></a></li>
+        <li><a href="Chill.html" class="active"><i class="fa-solid fa-mug-hot"></i> <span>Chill Room</span></a></li>
+        <li><a href="community.html"><i class="fa-solid fa-users"></i> <span>Community</span></a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="main-content">
+    <section class="dashboard">
+      <div>
+        <div class="card post-card">
+          <h3>Meme of the Day</h3>
+          <div class="image-placeholder" role="img" aria-label="Image placeholder">
+            <i class="fa-regular fa-image"></i>
+            <span class="vis-label">Image placeholder</span>
+          </div>
+          <div style="background:#e6e7e6; padding:12px; margin-top:8px; border-radius:6px;">When the professor says 'this will be easy'
+            <div style="margin-top:6px; color:#6b7280;">
+              <button class="like-button" data-post-id="post-1" aria-pressed="false" title="Like this post" style="background:transparent; border:none; color:inherit; padding:0; cursor:pointer;">
+                <i class="fa-regular fa-thumbs-up"></i> <span class="like-count">42</span> likes
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card post-card" style="margin-top:18px;">
+          <div class="image-placeholder" role="img" aria-label="Image placeholder">
+            <i class="fa-regular fa-image"></i>
+            <span class="vis-label">Image placeholder</span>
+          </div>
+          <div style="background:#e6e7e6; padding:12px; margin-top:8px; border-radius:6px;">Group projects: expectations vs reality
+            <div style="margin-top:6px; color:#6b7280;">
+              <button class="like-button" data-post-id="post-2" aria-pressed="false" title="Like this post" style="background:transparent; border:none; color:inherit; padding:0; cursor:pointer;">
+                <i class="fa-regular fa-thumbs-up"></i> <span class="like-count">37</span> likes
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card post-card" style="margin-top:18px;">
+          <div class="image-placeholder" role="img" aria-label="Image placeholder">
+            <i class="fa-regular fa-image"></i>
+            <span class="vis-label">Image placeholder</span>
+          </div>
+          <div style="background:#e6e7e6; padding:12px; margin-top:8px; border-radius:6px;">My study partner isn't helping much
+            <div style="margin-top:6px; color:#6b7280;">
+              <button class="like-button" data-post-id="post-3" aria-pressed="false" title="Like this post" style="background:transparent; border:none; color:inherit; padding:0; cursor:pointer;">
+                <i class="fa-regular fa-thumbs-up"></i> <span class="like-count">56</span> likes
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card poll-card" style="margin-top:18px;">
+          <h3>Today's Poll</h3>
+          <div class="poll-inner" style="background:#e6e7e6; padding:18px; border-radius:8px;">
+            <p style="font-weight:600; margin-bottom:12px;">What's your mood today?</p>
+            <div class="poll-list">
+              <button class="poll-option" data-value="Energetic">Energetic 🔥</button>
+              <button class="poll-option" data-value="Focused">Focused 🧠</button>
+              <button class="poll-option" data-value="Tired">Tired 😴</button>
+              <button class="poll-option" data-value="Relaxed">Relaxed 😊</button>
+              <button class="poll-option" data-value="Stressed">Stressed 😰</button>
+            </div>
+
+            <div id="pollSelected" class="poll-selected" aria-live="polite" style="display:none; margin-top:12px; padding:12px; border-radius:6px;">
+              You selected: <strong id="pollSelectedText"></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card mini-games">
+          <h3>Mini Games</h3>
+          <div style="background:#e6e7e6; padding:14px; border-radius:6px; margin-bottom:12px;">
+            <p style="font-weight:600;">Quick Trivia</p>
+            <p style="font-size:14px; color:#6b7280;">Test your knowledge with random questions</p>
+            <button id="playTriviaBtn" class="btn" style="margin-top:8px; background:#3f5e7d;">Play Trivia</button>
+            <div id="triviaArea" style="margin-top:12px;"></div>
+          </div>
+
+          <div style="background:#e6e7e6; padding:14px; border-radius:6px;">
+            <p style="font-weight:600;">Word Scramble</p>
+            <p style="font-size:14px; color:#6b7280;">Unscramble words against the clock</p>
+            <button id="startScrambleBtn" class="btn" style="margin-top:8px; background:#3f5e7d;">Start Game</button>
+            <div id="scrambleArea" style="margin-top:12px;"></div>
+          </div>
+        </div>
+
+        <div class="card chat-card" style="margin-top:18px;">
+          <h3>Chat</h3>
+          <div id="chillChat" style="background:#e6e7e6; min-height:180px; border-radius:6px; padding:12px;">No messages yet. Start chatting!</div>
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <input id="chillInput" type="text" placeholder="Type a message..." style="flex:1; padding:10px; border-radius:4px; border:1px solid #cfcfcf;">
+            <button id="chillSend" class="btn">Send</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <button id="toggleCaptions">Captions</button>
+    <button id="toggleContrast">High Contrast</button>
+    <button id="toggleTheme">Pastel Theme</button>
+    <button id="voiceToText">Voice-to-Text</button>
+    <p>© 2026 VibeSpace</p>
+  </footer>
+
+  <script>
+    // simple local chat for chill room
+    (function(){
+      const chat = document.getElementById('chillChat');
+      const input = document.getElementById('chillInput');
+      const btn = document.getElementById('chillSend');
+      btn.addEventListener('click', () => {
+        const v = input.value.trim();
+        if(!v) return;
+        const d = document.createElement('div');
+        d.style.background = '#fff'; d.style.padding='8px'; d.style.borderRadius='8px'; d.style.marginBottom='8px';
+        d.textContent = v;
+        chat.appendChild(d);
+        input.value = '';
+      });
+      input.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ btn.click(); } });
+    })();
+
+    // Poll interaction
+    (function(){
+      const options = document.querySelectorAll('.poll-option');
+      const selectedBox = document.getElementById('pollSelected');
+      const selectedText = document.getElementById('pollSelectedText');
+      options.forEach(opt => {
+        opt.addEventListener('click', () => {
+          options.forEach(o=>o.classList.remove('active'));
+          opt.classList.add('active');
+          const v = opt.dataset.value || opt.textContent.trim();
+          if (selectedBox) { selectedText.textContent = v; selectedBox.style.display = 'block'; }
+        });
+      });
+    })();
+  </script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

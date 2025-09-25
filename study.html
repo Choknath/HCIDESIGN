@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeSpace - Study Room</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <!-- Top bar -->
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <h1 class="logo">VibeSpace</h1>
+      </div>
+      <div class="topbar-right">
+        <h2>Study Room</h2>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Main Sidebar">
+    <span class="sr-only">VibeSpace</span>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Home</span></a></li>
+        <li><a href="Study.html" class="active"><i class="fa-regular fa-clock"></i> <span>Study Room</span></a></li>
+        <li><a href="chill.html"><i class="fa-regular fa-face-smile"></i> <span>Chill Room</span></a></li>
+        <li><a href="community.html"><i class="fa-solid fa-users"></i> <span>Community</span></a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="main-content">
+    <section class="dashboard">
+      <!-- Left column -->
+      <div>
+        <div class="focus-card welcome-card">
+          <div style="flex:1">
+            <h3 style="color:#e6eefc; margin-bottom:12px;">Focus Time</h3>
+            <div id="focusTimerDisplay" style="font-size:48px; font-weight:700; text-align:center;">25:00</div>
+            <div id="focusPhase" style="text-align:center; margin-top:8px; color:#cfd8e3;">Focus Time</div>
+            <div style="display:flex; justify-content:center; gap:18px; margin-top:12px;">
+              <button id="focusStartBtn" class="btn" style="border-radius:50%; width:54px; height:54px; font-size:18px;" aria-label="Start focus timer"><i class="fa-solid fa-play" style="font-size:18px"></i></button>
+              <button id="focusStopBtn" class="btn" style="border-radius:50%; width:54px; height:54px; font-size:18px;" aria-label="Reset focus timer"> <i class="fa-solid fa-stop"></i></button>
+            </div>
+
+            <!-- Hidden settings panel that appears when the gear is clicked -->
+            <div id="focusSettingsPanel" class="focus-settings-panel" style="display:none; margin-top:18px; background:#132532; color:#e6eefc; padding:12px; border-radius:8px;">
+              <label style="display:block; font-size:14px; margin-bottom:6px;">Focus Time (minutes)</label>
+              <input id="focusMinutesInput" type="number" min="1" value="25" style="width:100%; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:transparent; color:#e6eefc;">
+              <label style="display:block; font-size:14px; margin:12px 0 6px;">Break Time (minutes)</label>
+              <input id="breakMinutesInput" type="number" min="1" value="5" style="width:100%; padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:transparent; color:#e6eefc;">
+              <div style="text-align:center; margin-top:12px;"><button id="saveFocusSettingsBtn" class="btn" style="width:100%;">Save Settings</button></div>
+            </div>
+          </div>
+          <div style="align-self:flex-start; opacity:0.9;">
+            <button id="focusSettingsBtn" class="btn" style="background:transparent; color:#e6eefc; width:42px; height:42px; padding:8px; display:flex; align-items:center; justify-content:center; border-radius:8px;" aria-label="Open focus settings"><i class="fa-solid fa-gear"></i></button>
+          </div>
+        </div>
+
+        <div class="music-player-card quick-access" style="margin-top:18px;">
+          <h3><i class="fa-solid fa-music"></i> Music Player</h3>
+          <div style="background:#e6e7e6; padding:14px; border-radius:6px; margin-top:8px;">Now Playing:<br><strong>Lo-Fi Study Beats</strong></div>
+          <div style="display:flex; gap:12px; margin-top:12px;">
+            <button id="lofiPlaylistBtn" class="btn" style="flex:1; background:#3f5e7d;">Lo-Fi Playlist</button>
+            <button id="chooseTrackBtn" class="btn" style="flex:1; background:#142934;">Choose Track</button>
+          </div>
+          <div id="musicPlayerControls" style="margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div>
+        <div class="study-tasks-card recent-activity" style="padding:18px;">
+          <h3>Study Tasks</h3>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <input id="taskInput" type="text" placeholder="Add a new task..." style="flex:1; padding:10px; border-radius:4px; border:1px solid #cfcfcf;">
+            <button id="addTaskBtn" class="btn">+</button>
+          </div>
+
+          <ul id="taskList" style="list-style:none; margin-top:12px; padding-left:0;">
+            <li style="background:#e6e7e6; padding:10px; border-radius:6px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+              <label><input class="task-checkbox" type="checkbox"> <span class="task-text">Complete math assignment</span></label>
+              <button class="btn delete-btn" style="background:transparent; color:#223f75;">&#128427;</button>
+            </li>
+            <li style="background:#e6e7e6; padding:10px; border-radius:6px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+              <label><input class="task-checkbox" type="checkbox" checked> <span class="task-text completed">Read chapter 5</span></label>
+              <button class="btn delete-btn" style="background:transparent; color:#223f75;">&#128427;</button>
+            </li>
+            <li style="background:#e6e7e6; padding:10px; border-radius:6px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+              <label><input class="task-checkbox" type="checkbox"> <span class="task-text">Prepare study notes</span></label>
+              <button class="btn delete-btn" style="background:transparent; color:#223f75;">&#128427;</button>
+            </li>
+          </ul>
+
+          <div style="text-align:right; margin-top:8px;"><button class="btn">Export Notes</button></div>
+        </div>
+
+        <div style="height:18px"></div>
+      </div>
+
+      <!-- Recent / Chat full width -->
+      <div class="recent-activity" style="margin-top:8px;">
+        <h3>Study Buddies Chat</h3>
+        <div id="chatBox" style="background:#e6e7e6; min-height:280px; border-radius:6px; padding:10px; overflow-y:auto;">
+          <div id="emptyMsg" style="text-align:center; color:#6b7280;">Chat is empty. Start the conversation!</div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <input id="chatInput" type="text" placeholder="Type a message..." style="flex:1; padding:10px; border-radius:4px; border:1px solid #cfcfcf;">
+          <button id="sendBtn" class="btn">Send</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <button id="toggleCaptions">Captions</button>
+    <button id="toggleContrast">High Contrast</button>
+    <button id="toggleTheme">Pastel Theme</button>
+    <button id="voiceToText">Voice-to-Text</button>
+    <p>© 2026 VibeSpace</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Simple chat UI (local only)
+    (function(){
+      const chatBox = document.getElementById('chatBox');
+      const chatInput = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const emptyMsg = document.getElementById('emptyMsg');
+
+      function appendMessage(text) {
+        if (!text.trim()) return;
+        if (emptyMsg) emptyMsg.style.display = 'none';
+        const msg = document.createElement('div');
+        msg.style.background = '#fff';
+        msg.style.padding = '8px 12px';
+        msg.style.borderRadius = '8px';
+        msg.style.marginBottom = '8px';
+        msg.textContent = text;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      sendBtn.addEventListener('click', () => {
+        appendMessage(chatInput.value);
+        chatInput.value = '';
+        chatInput.focus();
+      });
+
+      chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendBtn.click();
+        }
+      });
+    })();
+    // Task list behavior
+    (function(){
+      const addBtn = document.getElementById('addTaskBtn');
+      const taskInput = document.getElementById('taskInput');
+      const taskList = document.getElementById('taskList');
+
+      function bindTaskEvents(li) {
+        const checkbox = li.querySelector('.task-checkbox');
+        const text = li.querySelector('.task-text');
+        const del = li.querySelector('.delete-btn');
+
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) text.classList.add('completed');
+          else text.classList.remove('completed');
+        });
+
+        del.addEventListener('click', () => {
+          li.remove();
+        });
+      }
+
+      // bind existing
+      Array.from(document.querySelectorAll('#taskList li')).forEach(bindTaskEvents);
+
+      addBtn.addEventListener('click', () => {
+        const val = taskInput.value.trim();
+        if (!val) return;
+        const li = document.createElement('li');
+        li.style.cssText = 'background:#e6e7e6; padding:10px; border-radius:6px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;';
+        li.innerHTML = `<label><input class="task-checkbox" type="checkbox"> <span class="task-text">${val}</span></label><button class="btn delete-btn" style="background:transparent; color:#223f75;">&#128427;</button>`;
+        taskList.appendChild(li);
+        bindTaskEvents(li);
+        taskInput.value = '';
+        taskInput.focus();
+      });
+
+      taskInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); addBtn.click(); }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeSpace - Community</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+  <style>
+    /* small page-specific tweaks */
+    .two-column { display:flex; gap:20px; align-items:flex-start; }
+  .categories-card { width: 320px; }
+    .threads-card { flex:1; }
+  .category-btn { display:block; width:100%; text-align:left; padding:16px 18px; margin-bottom:14px; background:#e9eaeb; border-radius:10px; border:none; cursor:pointer; font-size:16px; }
+    .category-btn.active { background:#29445f; color:#fff; }
+  .threads-list { display:flex; flex-direction:column; gap:18px; }
+  .thread-item { background:#e6e7e6; padding:18px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; }
+  .thread-item strong { font-size:18px; }
+  .thread-meta { color:#6b7280; font-size:14px; margin-top:10px; display:flex; gap:20px; align-items:center; }
+  .thread-tag { background:#6f87a1; color:#fff; padding:8px 10px; border-radius:8px; font-size:13px; }
+    /* modal */
+    .modal-backdrop { position:fixed; left:0; right:0; top:0; bottom:0; background:rgba(0,0,0,0.4); display:none; align-items:center; justify-content:center; z-index:60; }
+    .modal { background:#fff; padding:18px; border-radius:10px; width:480px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+    .modal h3 { margin-bottom:8px; }
+    .modal .form-row { margin-bottom:10px; }
+    .modal input, .modal textarea, .modal select { width:100%; padding:8px 10px; border-radius:6px; border:1px solid #d1d5db; }
+  .search-input { float:right; width:340px; padding:10px 12px; border-radius:8px; border:1px solid #cfcfcf; font-size:14px; }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <div class="topbar-left"><h1 class="logo">VibeSpace</h1></div>
+      <div class="topbar-right"><h2>Community Forum</h2></div>
+    </div>
+  </header>
+
+  <aside class="sidebar" role="navigation" aria-label="Main Sidebar">
+    <span class="sr-only">VibeSpace</span>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Home</span></a></li>
+        <li><a href="Study.html"><i class="fa-regular fa-clock"></i> <span>Study Room</span></a></li>
+        <li><a href="Chill.html"><i class="fa-regular fa-face-smile"></i> <span>Chill Room</span></a></li>
+        <li><a href="Community.html" class="active"><i class="fa-solid fa-users"></i> <span>Community</span></a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="main-content">
+    <div class="two-column">
+      <div class="card categories-card">
+        <h3>Categories</h3>
+        <div style="margin-top:12px;">
+          <button class="category-btn active" data-cat="all"> <i class="fa-regular fa-comment"></i> All Threads</button>
+          <button class="category-btn" data-cat="study"> <i class="fa-solid fa-book"></i> Study Tips</button>
+          <button class="category-btn" data-cat="accessibility"> <i class="fa-solid fa-universal-access"></i> Accessibility Hacks</button>
+          <button class="category-btn" data-cat="random"> <i class="fa-regular fa-face-laugh"></i> Random Fun</button>
+        </div>
+        <div style="margin-top:14px; text-align:center;"><button id="newThreadBtn" class="btn">Create New Thread</button></div>
+      </div>
+
+      <div class="card threads-card">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <h3 id="threadsTitle">All Threads</h3>
+          <input id="searchThreads" class="search-input" placeholder="Search threads..." aria-label="Search threads">
+        </div>
+        <div style="margin-top:12px;" id="threadsWrap">
+          <div class="threads-list" id="threadsList">
+            <!-- threads rendered here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <button id="toggleCaptions">Captions</button>
+    <button id="toggleContrast">High Contrast</button>
+    <button id="toggleTheme">Pastel Theme</button>
+    <button id="voiceToText">Voice-to-Text</button>
+    <p>© 2026 VibeSpace</p>
+  </footer>
+
+  <!-- Create Thread Modal -->
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="createThreadTitle">
+      <h3 id="createThreadTitle">Create New Thread</h3>
+      <div class="form-row"><input id="threadTitle" placeholder="Thread title"></div>
+      <div class="form-row"><input id="threadAuthor" placeholder="Your name"></div>
+      <div class="form-row">
+        <select id="threadCategory">
+          <option value="study">Study Tips</option>
+          <option value="accessibility">Accessibility</option>
+          <option value="random">Random</option>
+        </select>
+      </div>
+      <div class="form-row"><textarea id="threadContent" rows="4" placeholder="Write a short description..."></textarea></div>
+      <div style="display:flex; gap:8px; justify-content:flex-end;"><button id="cancelThread" class="btn" style="background:#cfcfcf; color:#000;">Cancel</button><button id="createThread" class="btn">Create</button></div>
+    </div>
+  </div>
+
+  <script>
+    // community page script: threads CRUD in localStorage + search + category filter
+    (function(){
+      const STORAGE_KEY = 'vibe_threads_v1';
+      const defaultThreads = [
+        { id:1, title:'Best way to study for finals?', author:'studymaster', replies:12, upvotes:24, tag:'study', time:'2 hours ago', content:''},
+        { id:2, title:'Screen reader recommendations', author:'accessibilityfan', replies:8, upvotes:17, tag:'accessibility', time:'5 hours ago', content:''},
+        { id:3, title:"Friday meme thread", author:'memequeen', replies:32, upvotes:45, tag:'random', time:'1 day ago', content:''}
+      ];
+
+      // elements
+      const threadsList = document.getElementById('threadsList');
+      const searchInput = document.getElementById('searchThreads');
+      const categoryBtns = document.querySelectorAll('.category-btn');
+      const threadsTitle = document.getElementById('threadsTitle');
+      const newThreadBtn = document.getElementById('newThreadBtn');
+      const modal = document.getElementById('modalBackdrop');
+      const createBtn = document.getElementById('createThread');
+      const cancelBtn = document.getElementById('cancelThread');
+
+      function loadThreads(){
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) { localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultThreads)); return defaultThreads.slice(); }
+        try { return JSON.parse(raw); } catch(e){ return defaultThreads.slice(); }
+      }
+
+      function saveThreads(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+
+      function renderThreads(opts={search:'', cat:'all'}){
+        const q = (opts.search || '').toLowerCase();
+        const cat = opts.cat || 'all';
+        let list = loadThreads();
+        if (cat !== 'all') list = list.filter(t=>t.tag === cat);
+        if (q) list = list.filter(t => (t.title + ' ' + (t.content||'') + ' ' + t.author).toLowerCase().includes(q));
+        threadsList.innerHTML = '';
+        if (list.length === 0) { threadsList.innerHTML = '<p style="color:#6b7280;">No threads yet.</p>'; return; }
+        list.forEach(t => {
+          const el = document.createElement('div');
+          el.className = 'thread-item';
+          el.innerHTML = `
+            <div style="flex:1">
+              <strong>${escapeHtml(t.title)}</strong>
+              <div class="thread-meta" style="margin-top:8px;">
+                <div><i class="fa-regular fa-user"></i> ${escapeHtml(t.author)}</div>
+                <div style="margin-top:8px; display:flex; gap:12px; align-items:center;">
+                  <button class="reply-btn" data-id="${t.id}" style="background:transparent;border:none;cursor:pointer;color:#6b7280;"><i class="fa-regular fa-comments"></i> <span class="reply-count">${t.replies}</span> replies</button>
+                  <button class="upvote-btn" data-id="${t.id}" style="background:transparent;border:none;cursor:pointer;color:#6b7280;"><i class="fa-regular fa-thumbs-up"></i> <span class="upvote-count">${t.upvotes}</span> upvotes</button>
+                </div>
+              </div>
+            </div>
+            <div style="text-align:right; min-width:140px;">
+              <div style="font-size:12px; color:#6b7280;">${t.time}</div>
+              <div style="margin-top:8px"><span class="thread-tag">${escapeHtml(t.tag)}</span></div>
+            </div>
+          `;
+          threadsList.appendChild(el);
+        });
+      }
+
+      // Thread detail modal (for viewing and adding replies)
+      (function(){
+        const threadModalHtml = `
+          <div id="threadModalBackdrop" class="modal-backdrop">
+            <div class="modal" role="dialog" aria-modal="true">
+              <h3 id="threadModalTitle"></h3>
+              <div id="threadModalAuthor" style="color:#6b7280; margin-bottom:8px;"></div>
+              <div id="threadModalContent" style="margin-bottom:12px; color:#222;"></div>
+              <div style="max-height:260px; overflow:auto; background:#f7f7f7; padding:8px; border-radius:6px; margin-bottom:10px;" id="threadReplies"></div>
+              <div style="display:flex; gap:8px;"><input id="replyInput" placeholder="Write a reply..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #d1d5db;"/><button id="postReplyBtn" class="btn">Reply</button></div>
+              <div style="text-align:right; margin-top:10px;"><button id="closeThreadModal" class="btn" style="background:#cfcfcf; color:#000;">Close</button></div>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', threadModalHtml);
+
+        const threadModalBackdrop = document.getElementById('threadModalBackdrop');
+        const threadModalTitle = document.getElementById('threadModalTitle');
+        const threadModalAuthor = document.getElementById('threadModalAuthor');
+        const threadModalContent = document.getElementById('threadModalContent');
+        const threadReplies = document.getElementById('threadReplies');
+        const replyInput = document.getElementById('replyInput');
+        const postReplyBtn = document.getElementById('postReplyBtn');
+        const closeThreadModal = document.getElementById('closeThreadModal');
+
+        function openThread(id){
+          const threads = loadThreads();
+          const t = threads.find(x=>x.id==id);
+          if(!t) return;
+          threadModalTitle.textContent = t.title;
+          threadModalAuthor.textContent = 'By ' + t.author + (t.time ? ' • ' + t.time : '');
+          threadModalContent.textContent = t.content || '';
+          threadReplies.innerHTML = '';
+          const replies = t.repliesList && t.repliesList.length ? t.repliesList : [];
+          if(replies.length===0) threadReplies.innerHTML = '<div style="color:#6b7280; text-align:center; padding:20px;">No replies yet.</div>';
+          replies.forEach(r=>{
+            const d = document.createElement('div');
+            d.style.padding='8px'; d.style.background='#fff'; d.style.borderRadius='6px'; d.style.marginBottom='8px';
+            d.textContent = r.text + ' — ' + r.author;
+            threadReplies.appendChild(d);
+          });
+          threadModalBackdrop.style.display='flex';
+        }
+
+        function closeModal(){ threadModalBackdrop.style.display='none'; replyInput.value=''; }
+
+        document.addEventListener('click', (e)=>{
+          const up = e.target.closest('.upvote-btn');
+          const rp = e.target.closest('.reply-btn');
+          if (up){
+            const id = up.dataset.id; const threads = loadThreads(); const t = threads.find(x=>x.id==id); if(!t) return; t.upvotes = (t.upvotes||0)+1; saveThreads(threads); renderThreads({search:searchInput.value, cat:currentCat});
+            return;
+          }
+          if (rp){ openThread(rp.dataset.id); }
+        });
+
+        postReplyBtn.addEventListener('click', ()=>{
+          const txt = replyInput.value.trim(); if(!txt) return; const id = document.querySelector('.reply-btn[data-id]') && document.querySelector('.reply-btn[data-id]').dataset.id;
+          // find visible thread by title
+          const title = threadModalTitle.textContent; const threads = loadThreads(); const t = threads.find(x=>x.title===title);
+          if(!t) return;
+          t.replies = (t.replies||0)+1; t.repliesList = t.repliesList||[]; t.repliesList.push({ author:'You', text: txt, time: 'just now' });
+          saveThreads(threads);
+          // re-render reply list
+          openThread(t.id);
+          renderThreads({search:searchInput.value, cat:currentCat});
+        });
+
+        closeThreadModal.addEventListener('click', closeModal);
+        threadModalBackdrop.addEventListener('click', (e)=>{ if(e.target===threadModalBackdrop) closeModal(); });
+      })();
+
+      function escapeHtml(str){ return (''+str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
+
+      // category filter
+      let currentCat = 'all';
+      categoryBtns.forEach(b=> b.addEventListener('click', ()=>{
+        categoryBtns.forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        currentCat = b.dataset.cat || 'all';
+        threadsTitle.textContent = (currentCat === 'all') ? 'All Threads' : (b.textContent.trim());
+        renderThreads({search:searchInput.value, cat:currentCat});
+      }));
+
+      // search
+      searchInput.addEventListener('input', ()=> renderThreads({search:searchInput.value, cat:currentCat}));
+
+      // modal create
+      newThreadBtn.addEventListener('click', ()=> { modal.style.display='flex'; document.getElementById('threadTitle').focus(); });
+      cancelBtn.addEventListener('click', ()=> { modal.style.display='none'; });
+      modal.addEventListener('click', (e)=>{ if (e.target === modal) modal.style.display='none'; });
+
+      createBtn.addEventListener('click', ()=>{
+        const title = document.getElementById('threadTitle').value.trim();
+        const author = document.getElementById('threadAuthor').value.trim() || 'anonymous';
+        const cat = document.getElementById('threadCategory').value;
+        const content = document.getElementById('threadContent').value.trim();
+        if (!title) { alert('Please provide a title'); return; }
+        const threads = loadThreads();
+        const id = Date.now();
+        threads.unshift({ id, title, author, replies:0, upvotes:0, tag:cat, time:'just now', content });
+        saveThreads(threads);
+        modal.style.display='none';
+        // clear
+        document.getElementById('threadTitle').value='';
+        document.getElementById('threadAuthor').value='';
+        document.getElementById('threadContent').value='';
+        renderThreads({search:searchInput.value, cat:currentCat});
+      });
+
+      // initial render
+      renderThreads({search:'', cat:'all'});
+    })();
+  </script>
+      <script src="assets/js/main.js"></script>
+</body>
+</html>
