@@ -82,7 +82,19 @@
       captionsEl.textContent = final + interim;
       // insert final recognized text into active input (improves UX for assistive users)
       if(final && final.trim()){
-        insertRecognizedText(final.trim());
+        const finalTrim = final.trim();
+        const finalText = finalTrim.toLowerCase();
+        // first try to handle it as a voice command (forms, toggles, submit)
+        const handled = processVoiceCommand(finalTrim);
+        if(!handled){
+          insertRecognizedText(finalTrim);
+        }
+        // global voice commands: logout / sign out (still supported)
+        if(finalText.includes('log out') || finalText.includes('logout') || finalText.includes('sign out')){
+          try{ localStorage.removeItem('vibes_demo_user'); }catch(e){}
+          window.location.href = 'login.html';
+          return;
+        }
       }
     };
     recognition.onerror = (e) => { console.warn('Speech error', e); };
@@ -110,6 +122,70 @@
     for(const sel of chatSelectors){ const el = document.querySelector(sel); if(el){ const d=document.createElement('div'); d.className='caption-entry'; d.textContent=text; el.appendChild(d); el.scrollTop = el.scrollHeight; return; } }
     // else show in captions overlay
     const cap = ensureCaptionsOverlay(); cap.style.display='block'; cap.textContent = text;
+  }
+
+  // Centralized voice command parser used by page-specific handlers and the footer Voice-to-Text
+  function processVoiceCommand(rawText){
+    if(!rawText) return false;
+    const text = rawText.trim().toLowerCase();
+    const captions = ensureCaptionsOverlay();
+    try{
+      let m;
+      // email: support simple spoken 'at' and 'dot' replacements
+      if(m = text.match(/(?:set |type |enter )?email (?:to )?(.*)/i)){
+        let val = m[1].trim();
+        val = val.replace(/\s+at\s+/g, '@').replace(/\s+dot\s+/g, '.').replace(/\s+/g, '');
+        const el = document.querySelector('#email'); if(el){ el.value = val; captions.textContent = 'Email set from voice'; captions.style.display='block'; return true; }
+      }
+      // password
+      if(m = text.match(/(?:set |type |enter )?password (?:to )?(.*)/i)){
+        const val = m[1].trim().replace(/\s+/g,''); const el = document.querySelector('#password'); if(el){ el.value = val; captions.textContent = 'Password set from voice'; captions.style.display='block'; return true; }
+      }
+      // confirm password
+      if(m = text.match(/(?:set |type |enter )?confirm(?:ed)? password (?:to )?(.*)/i)){
+        const val = m[1].trim().replace(/\s+/g,''); const el = document.querySelector('#confirm'); if(el){ el.value = val; captions.textContent = 'Confirm password set'; captions.style.display='block'; return true; }
+      }
+      // pronouns
+      if(m = text.match(/pronouns? (.*)/i)){
+        const p = m[1].trim(); const sel = document.querySelector('#pronouns'); if(sel){ for(const opt of sel.options){ if(opt.text.toLowerCase().includes(p) || opt.value.toLowerCase().includes(p)){ sel.value = opt.value || opt.text; captions.textContent = 'Pronouns set'; captions.style.display='block'; return true; } } captions.textContent = 'Pronouns not matched'; captions.style.display='block'; return true; }
+      }
+      // remember / agree toggles
+      if(text.includes('remember')){ const chk = document.querySelector('#remember'); if(chk){ chk.checked = true; captions.textContent = 'Remember enabled'; captions.style.display='block'; return true; } }
+      if(text.includes('forget') || text.includes('unremember')){ const chk = document.querySelector('#remember'); if(chk){ chk.checked = false; captions.textContent = 'Remember disabled'; captions.style.display='block'; return true; } }
+      if(text.includes('agree') && !text.includes('disagree') && !text.includes('not agree')){ const a = document.querySelector('#agree'); if(a){ a.checked = true; captions.textContent = 'Agreed to terms'; captions.style.display='block'; return true; } }
+      if(text.includes('unagree') || text.includes('disagree') || text.includes('not agree')){ const a = document.querySelector('#agree'); if(a){ a.checked = false; captions.textContent = 'Agreement removed'; captions.style.display='block'; return true; } }
+      // clear fields
+      if(text.includes('clear email')){ const el = document.querySelector('#email'); if(el){ el.value = ''; captions.textContent = 'Email cleared'; captions.style.display='block'; return true; } }
+      if(text.includes('clear password')){ const p = document.querySelector('#password'); const c = document.querySelector('#confirm'); if(p) p.value=''; if(c) c.value=''; captions.textContent = 'Password fields cleared'; captions.style.display='block'; return true; }
+      // show/hide password
+      if(text.includes('show password')){ const p = document.querySelector('#password'); if(p) p.type = 'text'; captions.textContent = 'Password visible'; captions.style.display='block'; return true; }
+      if(text.includes('hide password')){ const p = document.querySelector('#password'); if(p) p.type = 'password'; captions.textContent = 'Password hidden'; captions.style.display='block'; return true; }
+      // form submissions: sign in / sign up
+      if(text.match(/(sign in|submit|log in|log me in|login)/i)){
+        const f = document.getElementById('signinForm'); if(f){ captions.textContent = 'Submitting sign-in form'; captions.style.display='block'; f.requestSubmit ? f.requestSubmit() : f.submit(); return true; }
+      }
+      if(text.match(/(sign up|submit|register|create account)/i)){
+        const f = document.getElementById('signupForm'); if(f){ captions.textContent = 'Submitting sign-up form'; captions.style.display='block'; f.requestSubmit ? f.requestSubmit() : f.submit(); return true; }
+      }
+      // navigation commands
+      if(text.match(/\b(go to|open|navigate to|visit|show)\b.*\bcommunity\b/i) || text.match(/\bcommunity( page)?\b/i)){
+        captions.textContent = 'Navigating to Community'; captions.style.display='block'; window.location.href = 'community.html'; return true;
+      }
+      if(text.match(/\b(go to|open|navigate to|visit|show)\b.*\bsettings\b/i) || text.match(/\bsettings( page)?\b/i)){
+        captions.textContent = 'Navigating to Settings'; captions.style.display='block'; window.location.href = 'settings.html'; return true;
+      }
+      if(text.match(/\b(go to|open|navigate to|visit|show)\b.*\bstudy( room)?\b/i) || text.match(/\bstudy( room)?\b/i)){
+        captions.textContent = 'Navigating to Study Room'; captions.style.display='block'; window.location.href = 'study.html'; return true;
+      }
+      if(text.match(/\b(go to|open|navigate to|visit|show)\b.*\bchill( room)?\b/i) || text.match(/\bchill( room)?\b/i)){
+        captions.textContent = 'Navigating to Chill Room'; captions.style.display='block'; window.location.href = 'chill.html'; return true;
+      }
+      if(text.match(/\b(go to|open|navigate to|visit|show|take me to)\b.*\b(home|dashboard|main)\b/i) || text.match(/\bhome\b/i)){
+        captions.textContent = 'Navigating to Home'; captions.style.display='block'; window.location.href = 'index.html'; return true;
+      }
+    }catch(err){ console.warn('processVoiceCommand error', err); }
+    // no match
+    return false;
   }
 
   function escapeHtml(str){

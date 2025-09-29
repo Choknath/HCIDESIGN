@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>VibeSpace — Register</title>
+		<link rel="stylesheet" href="assets/css/style.css">
+			<style>
+					/* Lightweight page-specific styles tuned to your screenshot */
+					:root { --login-bg: #f3f6f9; --panel-width:560px; --panel-height:760px; }
+					body { background: var(--login-bg); }
+
+					/* center the two panels in the viewport */
+					.login-wrap { display:flex; gap:28px; justify-content:start; align-items:center; padding:32px; min-height:100vh; width:100%; box-sizing:border-box; }
+
+					/* both panels share the same fixed dimensions so they match visually */
+					.login-left { flex:0 0 var(--panel-width); width:var(--panel-width); height:var(--panel-height); background:#1a1f29; border-radius:18px; display:flex; align-items:center; justify-content:center; padding:48px; color:#fff; }
+					.login-left .logo-box { text-align:center; width:100%; }
+					.login-left .logo-box img { max-width:520px; width:72%; height:auto; display:block; margin:18px auto 0; filter:drop-shadow(0 18px 40px rgba(0,0,0,0.6)); }
+					.login-left .logo-caption { margin-top:22px; color:#9aa7b3; font-size:14px; }
+
+					/* Right column matches size of left */
+					.login-right { flex:0 0 var(--panel-width); width:var(--panel-width); height:var(--panel-height); background:#ffffff; border-radius:8px; box-shadow:0 14px 40px rgba(13,22,33,0.06); align-self:center; overflow:visible; display:flex; flex-direction:column; }
+					.login-header { background:#0f2740; color:#fff; padding:10px 18px; border-radius:8px 8px 0 0; font-weight:600; display:flex; align-items:center; gap:8px; }
+					.login-header .brand { font-family:'Kaushan Script', cursive; color:#bfe0ff; margin-left:auto; }
+					.login-right .panel { padding:18px 20px 24px 20px; overflow:auto; max-height: calc(var(--panel-height) - 56px); }
+					.login-right h2 { margin:0 0 10px 0; font-size:18px; color:#12202a; }
+
+					.form-row { margin-bottom:16px; }
+					.form-row label { display:block; font-size:14px; color:#5a6a75; margin-bottom:8px; }
+					.form-row input, .form-row select { width:100%; padding:14px 16px; font-size:16px; line-height:1.3; min-height:48px; border-radius:12px; border:1px solid #eef2f6; background:#fff; box-shadow: inset 0 1px 0 rgba(16,24,32,0.02); }
+					.submit-btn { margin-top:16px; display:block; width:100%; padding:14px 16px; border-radius:12px; background:#3f5e7d; color:#fff; border:none; cursor:pointer; font-weight:700; font-size:16px; }
+					.muted { font-size:14px; color:#6b7280; margin-top:12px; text-align:center; }
+					.terms-row { display:flex; align-items:flex-start; gap:10px; margin-top:10px; }
+					.terms-row label { font-size:14px; color:#5a6a75; }
+					.terms-row a { color:#2b6ea3; }
+
+					@media (max-width:1100px){ :root { --panel-width:480px; --panel-height:700px; } }
+					@media (max-width:900px){
+						.login-wrap{ flex-direction:column; padding:18px; }
+						:root { --panel-width:100%; }
+						.login-left, .login-right { width:100%; height:auto; flex:1 1 auto; border-radius:12px; }
+						.login-right .panel { max-height:none; }
+						.login-left .logo-box img { width:64%; margin-top:18px; }
+					}
+				</style>
+	</head>
+	<body>
+		<main class="login-wrap">
+			<section class="login-left" aria-hidden="false">
+				<div class="logo-box">
+					<!-- Replace this src with your actual logo image later -->
+					<img id="vibeLogo" src="assets/unnamed 1.png" alt="VibeSpace logo placeholder">
+			</section>
+
+			<aside class="login-right" role="region" aria-label="Create account">
+				<div class="login-header">
+					<div class="title">Join</div>
+					<div class="brand">VibeSpace</div>
+				</div>
+				<div class="panel">
+				<form id="signupForm" novalidate>
+					<div class="form-row">
+						<label for="email">Email</label>
+						<input id="email" name="email" type="email" placeholder="Your Email Address" required>
+					</div>
+					<div class="form-row">
+						<label for="pronouns">Pronouns</label>
+						<select id="pronouns" name="pronouns">
+							<option value="">Choose</option>
+							<option>she/her</option>
+							<option>he/him</option>
+							<option>they/them</option>
+						</select>
+					</div>
+					<div class="form-row">
+						<label for="password">Password</label>
+						<input id="password" name="password" type="password" placeholder="Your Password" required>
+					</div>
+					<div class="form-row">
+						<label for="confirm">Confirm Password</label>
+						<input id="confirm" name="confirm" type="password" placeholder="Your Password" required>
+					</div>
+					<div class="terms-row">
+						<input id="agree" type="checkbox" aria-label="Agree to terms">
+						<label for="agree">I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a></label>
+					</div>
+					<button type="submit" class="submit-btn">Create Account</button>
+
+					<!-- Voice controls for register form -->
+					<div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+					  <div style="display:flex; gap:8px;">
+						<button type="button" id="voiceToggle" class="submit-btn" style="background:#fff;color:#25324a;border:1px solid #e6e9ee;">Start Voice</button>
+						<button type="button" id="voiceHelp" class="submit-btn" style="background:#f3f4f6;color:#25324a;border:1px solid #e6e9ee;">Voice Help</button>
+					  </div>
+					  <div id="voiceStatus" aria-live="polite" style="font-size:13px;color:#6b7280;"></div>
+					  <div id="voiceTranscript" style="font-size:15px;color:#0f172a;"></div>
+					</div>
+					<div class="muted">Already have an account? <a href="login.html">Sign in</a></div>
+				</form>
+				</div>
+			</aside>
+		</main>
+
+		<script>
+			// submit handler: validate, persist demo user, then redirect to index.html
+			document.getElementById('signupForm').addEventListener('submit', function(e){
+				e.preventDefault();
+				const email = (document.getElementById('email').value || '').trim();
+				const pw = document.getElementById('password').value || '';
+				const conf = document.getElementById('confirm').value || '';
+				const agree = document.getElementById('agree').checked;
+				if(!email || !pw){ alert('Please provide an email and password.'); return; }
+				if(pw !== conf){ alert('Passwords do not match'); return; }
+				if(!agree){ alert('Please agree to the Terms and Conditions to continue.'); return; }
+				// Save demo user to localStorage (simple, insecure demo only)
+				try{
+					const usersKey = 'vibes_users';
+					const existing = JSON.parse(localStorage.getItem(usersKey) || '[]');
+					existing.push({ email: email, password: pw, createdAt: new Date().toISOString() });
+					localStorage.setItem(usersKey, JSON.stringify(existing));
+					localStorage.setItem('vibes_demo_user', JSON.stringify({ email: email, signedIn: true }));
+				}catch(err){ console.warn('localStorage write failed', err); }
+				// Redirect to main page
+				window.location.href = 'index.html';
+			});
+
+			// Voice command support for register form
+			(function(){
+				const voiceToggle = document.getElementById('voiceToggle');
+				const voiceHelp = document.getElementById('voiceHelp');
+				const voiceStatus = document.getElementById('voiceStatus');
+				const voiceTranscript = document.getElementById('voiceTranscript');
+				const emailInput = document.getElementById('email');
+				const passwordInput = document.getElementById('password');
+				const confirmInput = document.getElementById('confirm');
+				const pronounsSelect = document.getElementById('pronouns');
+				const agreeCheckbox = document.getElementById('agree');
+
+				const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+				if(!SpeechRecognition){
+					voiceStatus.textContent = 'Voice commands are not supported in this browser.';
+					voiceToggle.disabled = true;
+					return;
+				}
+
+				const recog = new SpeechRecognition();
+				recog.lang = 'en-US';
+				recog.interimResults = true;
+				recog.maxAlternatives = 1;
+
+				let listening = false;
+
+				voiceToggle.addEventListener('click', ()=>{
+					if(listening){ recog.stop(); return; }
+					try{ recog.start(); }catch(e){}
+				});
+
+				voiceHelp.addEventListener('click', ()=>{
+					alert('Voice commands for register:\n- "email your email" → sets email\n- "password your password" → sets password\n- "confirm password ..." → sets confirm\n- "pronouns she/her" → selects pronouns\n- "agree" / "unagree" → toggle terms\n- "clear email" / "clear password" → clears fields\n- "sign up" / "submit" → submit the form');
+				});
+
+				recog.addEventListener('start', ()=>{ listening = true; voiceToggle.textContent = 'Stop Voice'; voiceStatus.textContent = 'Listening...'; voiceTranscript.textContent = ''; });
+				recog.addEventListener('end', ()=>{ listening = false; voiceToggle.textContent = 'Start Voice'; voiceStatus.textContent = 'Stopped'; });
+
+				recog.addEventListener('error', (ev)=>{ voiceStatus.textContent = 'Voice error: ' + (ev.error||ev.message); });
+
+				recog.addEventListener('result', (ev)=>{
+					let interim = '', final = '';
+					for(let i=ev.resultIndex;i<ev.results.length;i++){
+						const r = ev.results[i];
+						if(r.isFinal) final += r[0].transcript + ' ';
+						else interim += r[0].transcript + ' ';
+					}
+					voiceTranscript.textContent = (final + interim).trim();
+					if(final.trim()) processVoice(final.trim().toLowerCase());
+				});
+
+				function processVoice(text){
+					let m;
+					if(m = text.match(/(?:set |type |enter )?email (?:to )?(.*)/i)){
+						emailInput.value = m[1].trim().replace(/\s+/g,'');
+						voiceStatus.textContent = 'Email set from voice'; return;
+					}
+					if(m = text.match(/(?:set |type |enter )?password (?:to )?(.*)/i)){
+						passwordInput.value = m[1].trim().replace(/\s+/g,'');
+						voiceStatus.textContent = 'Password set from voice'; return;
+					}
+					if(m = text.match(/(?:set |type |enter )?confirm(?:ed)? password (?:to )?(.*)/i)){
+						confirmInput.value = m[1].trim().replace(/\s+/g,'');
+						voiceStatus.textContent = 'Confirm password set'; return;
+					}
+					if(m = text.match(/pronouns? (.*)/i)){
+						const p = m[1].trim();
+						// try to pick option
+						for(const opt of pronounsSelect.options){ if(opt.text.toLowerCase().includes(p)){ pronounsSelect.value = opt.text; voiceStatus.textContent = 'Pronouns set'; return; } }
+						voiceStatus.textContent = 'Pronouns not matched'; return;
+					}
+					if(text.includes('agree')){ agreeCheckbox.checked = true; voiceStatus.textContent = 'Agreed to terms'; return; }
+					if(text.includes('unagree') || text.includes('disagree') || text.includes('not agree')){ agreeCheckbox.checked = false; voiceStatus.textContent = 'Agreement removed'; return; }
+					if(text.includes('clear email')){ emailInput.value = ''; voiceStatus.textContent = 'Email cleared'; return; }
+					if(text.includes('clear password')){ passwordInput.value = ''; confirmInput.value = ''; voiceStatus.textContent = 'Password fields cleared'; return; }
+					if(text.match(/(sign up|submit|register|create account)/i)){
+						voiceStatus.textContent = 'Submitting...';
+						document.getElementById('signupForm').requestSubmit ? document.getElementById('signupForm').requestSubmit() : document.getElementById('signupForm').submit();
+						return;
+					}
+					voiceStatus.textContent = 'Voice heard: "' + text + '" — no matching command';
+				}
+			})();
+		</script>
+	</body>
+</html>
+
